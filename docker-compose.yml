@@ -1,0 +1,45 @@
+version: '3.9'
+services:
+  productservice:
+    build:
+      context: ./Product
+      dockerfile: Dockerfile
+    ports:
+      - "10010:80"
+    environment:
+      POSTGRES_DB: productdb
+      POSTGRES_USER: productuser
+      POSTGRES_PASSWORD: productpassword
+    depends_on:
+      - productdb
+
+  orderservice:
+    build:
+      context: ./Order
+      dockerfile: Dockerfile
+    ports:
+      - "10011:80"
+    environment:
+      POSTGRES_DB: orderdb
+      POSTGRES_USER: orderuser
+      POSTGRES_PASSWORD: orderpassword
+    depends_on:
+      - orderdb
+
+  productdb:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: productdb
+      POSTGRES_USER: productuser
+      POSTGRES_PASSWORD: productpassword
+    ports:
+      - "10020:5432"
+
+  orderdb:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: orderdb
+      POSTGRES_USER: orderuser
+      POSTGRES_PASSWORD: orderpassword
+    ports:
+      - "10021:5432"
